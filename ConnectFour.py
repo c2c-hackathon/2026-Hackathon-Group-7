@@ -38,6 +38,7 @@ class ConnectFour:
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0]
         ]
+        self.turn = PLAYER_ONE
 
     def register_callbacks(self):
         #Register callbacks that will be run when buttons are pressed and released
