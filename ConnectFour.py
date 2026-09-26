@@ -3,9 +3,11 @@ import typing
 from NeoTrellisGame import NeoTrellisGame, AbstractNeoTrellisGame, Action
 from adafruit_neotrellis.multitrellis import MultiTrellis
 from adafruit_neotrellis.neotrellis import NeoTrellis
+import Colors
 
 PLAYER_ONE = 1
 PLAYER_TWO = 2
+WHITE = 3
 
 ROWS = 6
 COLS = 7
@@ -74,9 +76,21 @@ class ConnectFour:
          self.game_state[self.find_lowest_empty_row(col)][col] = self.turn
          self.board.play_sound("clack.mp3")
 
+         self.switch_player()
+         self.update_board_colors()
+
     def update_board_colors(self):
         #TODO: Take the current game state and update the board colors accordingly. Hint: look at NeoTrellisGame.py for functions to update the colors and display the colors
-        pass
+        for row in range(ROWS):
+            for col in range(COLS):
+                color = Colors.WHITE
+                if self.game_state[row][col] == PLAYER_ONE:
+                    color = Colors.RED
+                elif self.game_state[row][col] == PLAYER_TWO:
+                    color = Colors.BLUE
+                self.board.set_cell_color(col, row+2, color)
+
+        self.board.update_display()
 
     def switch_player(self):
         #TODO: Change which player is curently placing a piece. Keep track of this in some sort of variable
@@ -97,9 +111,7 @@ class ConnectFour:
             for y in range(7):
                 if self.game_state[x][y] == 0:
                     return False
-        return True
-
-        pass  
+        return True 
 
     def get_player_color(self, player) -> tuple[int, int, int]:
         #TODO: Return the color for the given player 
@@ -152,9 +164,19 @@ class ConnectFour:
     def show_winner(self):
         #TODO: Display on the board who won
         pass
+        
 
     def show_tie_game(self):
         #TODO: Display on the board that there was a draw
+        if is_board_full:
+            self.game_state = [
+            [3, 3, 3, 3, 3, 3, 3],
+            [3, 3, 3, 3, 3, 3, 3],
+            [3, 3, 3, 3, 3, 3, 3],
+            [3, 3, 3, 3, 3, 3, 3],
+            [3, 3, 3, 3, 3, 3, 3],
+            [3, 3, 3, 3, 3, 3, 3]
+        ]
         pass
 
 
