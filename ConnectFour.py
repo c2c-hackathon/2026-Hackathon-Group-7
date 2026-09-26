@@ -74,22 +74,22 @@ class ConnectFour:
         self.game_state[row][col] = self.turn
         self.board.play_sound("clack.mp3")
 
-         
-        self.update_board_colors()
         if self.check_win(row, col, self.turn):
             self.show_winner()
+        elif self.is_board_full():
+            self.show_tie_game()
         self.switch_player()
+        self.update_board_colors()
 
     def update_board_colors(self):
         #TODO: Take the current game state and update the board colors accordingly. Hint: look at NeoTrellisGame.py for functions to update the colors and display the colors
         for row in range(ROWS):
             for col in range(COLS):
-                color = Colors.WHITE
-                if self.game_state[row][col] == PLAYER_ONE:
-                    color = Colors.RED
-                elif self.game_state[row][col] == PLAYER_TWO:
-                    color = Colors.BLUE
+                color = self.get_player_color(self.game_state[row][col])
                 self.board.set_cell_color(col, row+2, color)
+
+        for x in range(7):
+            self.board.set_cell_color(x, 0, self.get_player_color(self.turn))
 
         self.board.update_display()
 
@@ -116,7 +116,12 @@ class ConnectFour:
 
     def get_player_color(self, player) -> tuple[int, int, int]:
         #TODO: Return the color for the given player 
-        pass
+        if player == PLAYER_ONE:
+            return Colors.RED
+        elif player == PLAYER_TWO:
+            return Colors.BLUE
+        else:
+            return Colors.WHITE
 
     def is_column_full(self, col: int):
         for row in self.game_state:
@@ -132,8 +137,8 @@ class ConnectFour:
         check_col = col
         directions = [(0, 1), (1, 0), (1, 1), (1, -1)] #Includes horizantal, vertical, and both diagonals
 
-        count = 1 #Tracks the amount of peices in a row
         for dr, dc in directions:
+            count = 1 #Tracks the amount of peices in a row
             check_row = row + dr
             check_col = col + dc
             while check_row < ROWS and check_row >= 0 and check_col < COLS and check_col >= 0:
@@ -165,7 +170,7 @@ class ConnectFour:
     def show_winner(self):
         #TODO: Display on the board who won
         print("winner: " + str(self.turn))
-        pass
+        self.board.play_sound("cheer.mp3")
         
 
     def show_tie_game(self):
@@ -179,6 +184,6 @@ class ConnectFour:
             [3, 3, 3, 3, 3, 3, 3],
             [3, 3, 3, 3, 3, 3, 3]
         ]
-        pass
+        print("TIE")
 
 
