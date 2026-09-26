@@ -8,6 +8,7 @@ while True:
     try:
         connect_four.board.sync()
         time.sleep(0.1)
+        print(connect_four.find_lowest_empty_row(0))
     except KeyboardInterrupt:
         # clear board
         print("\nClosing game...")
