@@ -7,6 +7,9 @@ from adafruit_neotrellis.neotrellis import NeoTrellis
 PLAYER_ONE = 1
 PLAYER_TWO = 2
 
+ROWS = 6
+COLS = 7
+
 class ConnectFour:
     def __init__(self, board: typing.Optional[AbstractNeoTrellisGame] = None):
         self.board = board if board is not None else NeoTrellisGame()
@@ -71,12 +74,15 @@ class ConnectFour:
 
     def switch_player(self):
         #TODO: Change which player is curently placing a piece. Keep track of this in some sort of variable
-        pass
-        
+        if self.turn == PLAYER_ONE:
+            self.turn == PLAYER_TWO
+        if self.turn == PLAYER_TWO:
+            self.turn == PLAYER_ONE
 
     def show_current_player(self):
         #TODO: Function to indicate on the board which player is currently placing a piece
         pass
+        
 
     def is_board_full(self):
         #TODO: Return whether or not the game state has no more legal moves
@@ -102,9 +108,40 @@ class ConnectFour:
             
             
 
-    def check_win(self):
-        #TODO: Check the game state to see if any player has won or if there is a draw
-        pass
+    def check_win(self, row, col, player):
+        check_row = row
+        check_col = col
+        directions = [(0, 1), (1, 0), (1, 1), (1, -1)]
+
+        count = 1
+        for dr, dc in directions:
+            check_row = row + dr
+            check_col = col + dc
+            while check_row < ROWS and check_row >= 0 and check_col < COLS and check_col >= 0:
+                if self.game_state[check_row][check_col] == player:
+                    count += 1
+                    check_row += dr
+                    check_col += dc
+                else:
+                    break
+
+            check_row = row - dr
+            check_col = col - dc
+            while check_row < ROWS and check_row >= 0 and check_col < COLS and check_col >= 0:
+                if self.game_state[check_row][check_col] == player:
+                    count += 1
+                    check_row -= dr
+                    check_col -= dc
+                else:
+                    break
+
+            if count >= 4:
+                return True
+
+        return False
+
+
+            
 
     def show_winner(self):
         #TODO: Display on the board who won
