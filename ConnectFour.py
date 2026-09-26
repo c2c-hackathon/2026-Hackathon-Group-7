@@ -115,7 +115,11 @@ class ConnectFour:
         self.update_board_colors()
 
     def update_board_colors(self):
-        #TODO: Take the current game state and update the board colors accordingly. Hint: look at NeoTrellisGame.py for functions to update the colors and display the colors
+        # Take the current game state and update the board colors accordingly. Hint: look at NeoTrellisGame.py for functions to update the colors and display the colors
+        for row in range(8):
+            for col in range(8):
+                self.board.set_cell_color(col, row, Colors.OFF)
+
         for row in range(ROWS):
             for col in range(COLS):
                 color = self.get_player_color(self.game_state[row][col])
@@ -221,6 +225,7 @@ class ConnectFour:
         print("winner: " + str(self.turn))
         self.board.play_sound("cheer.mp3")
 
+        # flash the winning row
         for _ in range(5):
             for r, c in self.win_flash:
                 self.board.set_cell_color(c, r+2, Colors.WHITE)
@@ -236,6 +241,8 @@ class ConnectFour:
     def show_tie_game(self):
         #Displays on the board that there was a draw
         self.board.play_sound("draw_sound.mp3")
+        
+        # flash all the pieces
         for _ in range(5):
             for r in range(ROWS):
                 for c in range(COLS):
@@ -249,16 +256,22 @@ class ConnectFour:
             time.sleep(.2)
         print("TIE")
 
-    def show_start(self):#Start screen
-        self.game_state = [
-            [1, 1, 2, 2, 1, 1, 1],
-            [1, 0, 2, 2, 1, 0, 1],
-            [1, 1, 2, 2, 1, 0, 1],
-            [0, 0, 4, 0, 4, 0, 0],
-            [0, 0, 4, 4, 4, 0, 0],
-            [0, 0, 0, 0, 4, 0, 0]
+    def show_start(self):
+        # show cool start screen, 1=red, 2=blue, 4=yellow
+        start_screen = [
+            [1, 1, 2, 2, 2, 1, 1, 1],
+            [1, 0, 2, 0, 2, 1, 0, 1],
+            [1, 1, 2, 2, 2, 1, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 4, 0, 4, 0, 0, 0],
+            [0, 0, 4, 4, 4, 0, 0, 0],
+            [0, 0, 0, 0, 4, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0]            
         ]
 
-        self.update_board_colors()
+        for row in range(8):
+            for col in range(8):
+                color = self.get_player_color(start_screen[row][col])
+                self.board.set_cell_color(col, row, color)
 
-
+        self.board.update_display()
