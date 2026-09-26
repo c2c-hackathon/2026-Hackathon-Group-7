@@ -1,5 +1,5 @@
 import typing
-
+import time
 from NeoTrellisGame import NeoTrellisGame, AbstractNeoTrellisGame, Action
 from adafruit_neotrellis.multitrellis import MultiTrellis
 from adafruit_neotrellis.neotrellis import NeoTrellis
@@ -52,6 +52,7 @@ class ConnectFour:
         #Logic for pressing buttons
         print(f"I'm handling a button ({x}, {y})")
         if x == 7 and y== 0:
+            self.board.play_sound("reset.mp3")
             self.reset_game()
             self.update_board_colors()
         elif self.find_lowest_empty_row(x) == -1:
@@ -78,6 +79,12 @@ class ConnectFour:
     def place_piece(self, col: int):
         #Finds the legal move in the column, and updates the game state to reflect the new piece, checking to see if a player has won with that new piece.
         row = self.find_lowest_empty_row(col)
+        for i in range(row):
+            self.game_state[i][col] = self.turn
+            self.update_board_colors()
+            time.sleep(0.1)
+            self.game_state[i][col] = 0
+            self.update_board_colors()
         self.game_state[row][col] = self.turn
         self.board.play_sound("clack.mp3")
 
