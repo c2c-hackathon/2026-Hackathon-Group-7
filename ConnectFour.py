@@ -26,6 +26,7 @@ class ConnectFour:
         ]
         self.turn = PLAYER_ONE
         self.register_callbacks()
+        self.game_over = False
         print(self.is_board_full())
 
     def reset_game(self):
@@ -39,6 +40,7 @@ class ConnectFour:
             [0, 0, 0, 0, 0, 0, 0]
         ]
         self.turn = PLAYER_ONE
+        self.game_over = False
 
     def register_callbacks(self):
         #Register callbacks that will be run when buttons are pressed and released
@@ -53,8 +55,12 @@ class ConnectFour:
             self.reset_game()
             self.update_board_colors()
         elif self.find_lowest_empty_row(x) == -1:
+            if self.game_over:
+                return
             self.board.play_sound("better_buzzer.mp3")
         else:
+            if self.game_over:
+                return
             self.place_piece(x)
         
 
@@ -76,8 +82,10 @@ class ConnectFour:
         self.board.play_sound("clack.mp3")
 
         if self.check_win(row, col, self.turn):
+            self.game_over = True
             self.show_winner()
         elif self.is_board_full():
+            self.game_over = True
             self.show_tie_game()
         self.switch_player()
         self.update_board_colors()
@@ -91,6 +99,12 @@ class ConnectFour:
 
         for x in range(7):
             self.board.set_cell_color(x, 0, self.get_player_color(self.turn))
+
+        
+        if self.game_over:
+            self.board.set_cell_color(7, 0, Colors.GREEN)
+        else:
+            self.board.set_cell_color(7, 0, Colors.YELLOW)
 
         self.board.update_display()
 
