@@ -15,12 +15,12 @@ class ConnectFour:
         self.board = board if board is not None else NeoTrellisGame()
         super().__init__()
         self.game_state = [
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1]
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
         ]
         self.turn = PLAYER_ONE
         self.register_callbacks()
@@ -53,8 +53,10 @@ class ConnectFour:
         """
         #TODO: Implement what will happen when the button at position x,y is pressed or released
         print(f"I'm handling a button ({x}, {y})")
-
-            
+        if self.find_lowest_empty_row(x) == -1:
+            self.board.play_sound("buzzer.mp3")
+        else:
+            self.place_piece(x)
 
         return x, y
 
@@ -73,9 +75,7 @@ class ConnectFour:
          self.board.play_sound("clack.mp3")
 
     def update_board_colors(self):
-        set_cell_color
         #TODO: Take the current game state and update the board colors accordingly. Hint: look at NeoTrellisGame.py for functions to update the colors and display the colors
-
         pass
 
     def switch_player(self):
