@@ -8,7 +8,14 @@ class ConnectFour:
     def __init__(self, board: typing.Optional[AbstractNeoTrellisGame] = None):
         self.board = board if board is not None else NeoTrellisGame()
         super().__init__()
-        self.game_state = [] #TODO: Choose a structure to represent what pieces are currently in the game board
+        self.game_state = [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ]
 
     def reset_game(self):
         #TODO reset the game state to its original empty state
