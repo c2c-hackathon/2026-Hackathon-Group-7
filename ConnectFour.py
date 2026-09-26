@@ -29,7 +29,7 @@ class ConnectFour:
         print(self.is_board_full())
 
     def reset_game(self):
-        #TODO reset the game state to its original empty state
+        #Empties the board
         self.game_state = [
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0],
@@ -40,20 +40,13 @@ class ConnectFour:
         ]
 
     def register_callbacks(self):
-        #TODO: Register callbacks that will be run when buttons are pressed and released
+        #Register callbacks that will be run when buttons are pressed and released
         for x in range(8):
             self.board.set_callback(x, 0, self.handle_button_event) 
             self.board.activate_key(x, 0, Action.BUTTON_PRESSED)
-        
-
-        pass
   
     def handle_button_event(self, x:int, y: int, action: Action):
-        """
-        This is an example of how a callback function will look. It takes an x value, y value, and action, which will indicate what button activated the callback and what action the user did to run it.
-        See NeoTrellisGame.set_callback() for info about callbacks.
-        """
-        #TODO: Implement what will happen when the button at position x,y is pressed or released
+        #Logic for pressing buttons
         print(f"I'm handling a button ({x}, {y})")
         if self.find_lowest_empty_row(x) == -1:
             self.board.play_sound("buzzer.mp3")
@@ -129,9 +122,9 @@ class ConnectFour:
     def check_win(self, row, col, player):
         check_row = row
         check_col = col
-        directions = [(0, 1), (1, 0), (1, 1), (1, -1)]
+        directions = [(0, 1), (1, 0), (1, 1), (1, -1)] #Includes horizantal, vertical, and both diagonals
 
-        count = 1
+        count = 1 #Tracks the amount of peices in a row
         for dr, dc in directions:
             check_row = row + dr
             check_col = col + dc
