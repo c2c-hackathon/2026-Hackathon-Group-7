@@ -3,6 +3,7 @@ import time
 from ConnectFour import ConnectFour
 
 connect_four = ConnectFour()
+connect_four.update_board_colors()
 connect_four.board.update_display()
 while True:
     
