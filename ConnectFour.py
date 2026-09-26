@@ -53,7 +53,7 @@ class ConnectFour:
             self.reset_game()
             self.update_board_colors()
         elif self.find_lowest_empty_row(x) == -1:
-            self.board.play_sound("buzzer.mp3")
+            self.board.play_sound("better_buzzer.mp3")
         else:
             self.place_piece(x)
         
