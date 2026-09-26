@@ -53,6 +53,9 @@ class ConnectFour:
         """
         #TODO: Implement what will happen when the button at position x,y is pressed or released
         print(f"I'm handling a button ({x}, {y})")
+
+            
+
         return x, y
 
     def find_lowest_empty_row(self, col: int):
@@ -67,9 +70,12 @@ class ConnectFour:
     def place_piece(self, col: int):
         #TODO: Finds the legal move in the column, and updates the game state to reflect the new piece, checking to see if a player has won with that new piece. Don't forget to play a sound!
          self.game_state[self.find_lowest_empty_row(col)][col] = self.turn
+         self.board.play_sound("clack.mp3")
 
     def update_board_colors(self):
+        set_cell_color
         #TODO: Take the current game state and update the board colors accordingly. Hint: look at NeoTrellisGame.py for functions to update the colors and display the colors
+
         pass
 
     def switch_player(self):
