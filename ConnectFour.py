@@ -12,15 +12,16 @@ class ConnectFour:
         self.board = board if board is not None else NeoTrellisGame()
         super().__init__()
         self.game_state = [
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0]
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1]
         ]
         self.turn = PLAYER_ONE
         self.register_callbacks()
+        print(self.is_board_full())
 
     def reset_game(self):
         #TODO reset the game state to its original empty state
@@ -70,6 +71,7 @@ class ConnectFour:
 
     def switch_player(self):
         #TODO: Change which player is curently placing a piece. Keep track of this in some sort of variable
+        pass
         
 
     def show_current_player(self):
@@ -78,6 +80,13 @@ class ConnectFour:
 
     def is_board_full(self):
         #TODO: Return whether or not the game state has no more legal moves
+        j = 0
+        for x in range(6):
+            for y in range(7):
+                if self.game_state[x][y] == 0:
+                    return False
+        return True
+
         pass  
 
     def get_player_color(self, player) -> tuple[int, int, int]:
