@@ -66,11 +66,15 @@ class ConnectFour:
 
     def place_piece(self, col: int):
         #TODO: Finds the legal move in the column, and updates the game state to reflect the new piece, checking to see if a player has won with that new piece. Don't forget to play a sound!
-         self.game_state[self.find_lowest_empty_row(col)][col] = self.turn
-         self.board.play_sound("clack.mp3")
+        row = self.find_lowest_empty_row(col)
+        self.game_state[row][col] = self.turn
+        self.board.play_sound("clack.mp3")
 
-         self.switch_player()
-         self.update_board_colors()
+         
+        self.update_board_colors()
+        if self.check_win(row, col, self.turn):
+            self.show_winner()
+        self.switch_player()
 
     def update_board_colors(self):
         #TODO: Take the current game state and update the board colors accordingly. Hint: look at NeoTrellisGame.py for functions to update the colors and display the colors
@@ -88,9 +92,9 @@ class ConnectFour:
     def switch_player(self):
         #TODO: Change which player is curently placing a piece. Keep track of this in some sort of variable
         if self.turn == PLAYER_ONE:
-            self.turn == PLAYER_TWO
-        if self.turn == PLAYER_TWO:
-            self.turn == PLAYER_ONE
+            self.turn = PLAYER_TWO
+        elif self.turn == PLAYER_TWO:
+            self.turn = PLAYER_ONE
 
     def show_current_player(self):
         #TODO: Function to indicate on the board which player is currently placing a piece
@@ -156,6 +160,7 @@ class ConnectFour:
 
     def show_winner(self):
         #TODO: Display on the board who won
+        print("winner: " + str(self.turn))
         pass
         
 
