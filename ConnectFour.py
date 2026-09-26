@@ -48,10 +48,14 @@ class ConnectFour:
     def handle_button_event(self, x:int, y: int, action: Action):
         #Logic for pressing buttons
         print(f"I'm handling a button ({x}, {y})")
-        if self.find_lowest_empty_row(x) == -1:
+        if x == 7 and y== 0:
+            self.reset_game()
+            self.update_board_colors()
+        elif self.find_lowest_empty_row(x) == -1:
             self.board.play_sound("buzzer.mp3")
         else:
             self.place_piece(x)
+        
 
         return x, y
 
@@ -65,7 +69,7 @@ class ConnectFour:
         return least
 
     def place_piece(self, col: int):
-        #TODO: Finds the legal move in the column, and updates the game state to reflect the new piece, checking to see if a player has won with that new piece. Don't forget to play a sound!
+        #Finds the legal move in the column, and updates the game state to reflect the new piece, checking to see if a player has won with that new piece.
         row = self.find_lowest_empty_row(col)
         self.game_state[row][col] = self.turn
         self.board.play_sound("clack.mp3")
