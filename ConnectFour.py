@@ -58,7 +58,6 @@ class ConnectFour:
   
     def handle_button_event(self, x:int, y: int, action: Action):
         #Logic for pressing buttons
-        print(f"I'm handling a button ({x}, {y})")
 
         # skip start screen when button pressed
         if self.start_screen:
