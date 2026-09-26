@@ -24,7 +24,7 @@ class ConnectFour:
 
     def register_callbacks(self):
         #TODO: Register callbacks that will be run when buttons are pressed and released
-        for x in range(7):
+        for x in range(8):
             self.board.set_callback(x, 0, self.handle_button_event) 
             self.board.activate_key(x, 0, Action.BUTTON_PRESSED)
         
