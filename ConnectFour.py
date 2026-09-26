@@ -16,6 +16,7 @@ class ConnectFour:
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0]
         ]
+        self.register_callbacks()
 
     def reset_game(self):
         #TODO reset the game state to its original empty state
@@ -23,8 +24,10 @@ class ConnectFour:
 
     def register_callbacks(self):
         #TODO: Register callbacks that will be run when buttons are pressed and released
-        self.board.set_callback(0, 0, self.handle_button_event) # Example of how to register a callback (function) for button 0, 0. Must be done for every button that runs a function
-        self.board.activate_key(0, 0, Action.BUTTON_PRESSED) # Even though the callback is set, if the key is not enabled it will not be run. This is how you enable
+        for x in range(7):
+            self.board.set_callback(x, 0, self.handle_button_event) 
+            self.board.activate_key(x, 0, Action.BUTTON_PRESSED)
+        
 
         pass
   
@@ -34,8 +37,8 @@ class ConnectFour:
         See NeoTrellisGame.set_callback() for info about callbacks.
         """
         #TODO: Implement what will happen when the button at position x,y is pressed or released
-  
-        pass
+        print(f"I'm handling a button ({x}, {y})")
+        return x, y
 
     def find_lowest_empty_row(self, col: int):
         #TODO: Return the lowest empty row in the column.
