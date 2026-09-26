@@ -4,6 +4,9 @@ from NeoTrellisGame import NeoTrellisGame, AbstractNeoTrellisGame, Action
 from adafruit_neotrellis.multitrellis import MultiTrellis
 from adafruit_neotrellis.neotrellis import NeoTrellis
 
+PLAYER_ONE = 1
+PLAYER_TWO = 2
+
 class ConnectFour:
     def __init__(self, board: typing.Optional[AbstractNeoTrellisGame] = None):
         self.board = board if board is not None else NeoTrellisGame()
@@ -66,8 +69,13 @@ class ConnectFour:
         pass
 
     def is_column_full(self, col: int):
-        #TODO: Return if the given column is currently full
-        pass
+        for row in self.game_state:
+            if row[col] == 0:
+                return False
+
+        return True
+            
+            
 
     def check_win(self):
         #TODO: Check the game state to see if any player has won or if there is a draw
