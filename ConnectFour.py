@@ -62,6 +62,7 @@ class ConnectFour:
         else:
             if self.game_over:
                 return
+            self.board.play_sound("piece_in.mp3")
             self.place_piece(x)
         
 
@@ -197,7 +198,8 @@ class ConnectFour:
 
     def show_tie_game(self):
         #TODO: Display on the board that there was a draw
-        if is_board_full:
+        self.board.play_sound("draw_sound.mp3")
+        if self.is_board_full():
             self.game_state = [
             [3, 3, 3, 3, 3, 3, 3],
             [3, 3, 3, 3, 3, 3, 3],
