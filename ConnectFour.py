@@ -4,6 +4,7 @@ from NeoTrellisGame import NeoTrellisGame, AbstractNeoTrellisGame, Action
 from adafruit_neotrellis.multitrellis import MultiTrellis
 from adafruit_neotrellis.neotrellis import NeoTrellis
 import Colors
+import time
 
 PLAYER_ONE = 1
 PLAYER_TWO = 2
@@ -27,7 +28,12 @@ class ConnectFour:
         self.turn = PLAYER_ONE
         self.register_callbacks()
         self.game_over = False
+        self.start_screen = True
         print(self.is_board_full())
+
+        self.win_flash = []
+
+        self.show_start()
 
     def reset_game(self):
         #Empties the board
@@ -41,6 +47,9 @@ class ConnectFour:
         ]
         self.turn = PLAYER_ONE
         self.game_over = False
+        self.win_flash = []
+
+        self.update_board_colors()
 
     def register_callbacks(self):
         #Register callbacks that will be run when buttons are pressed and released
@@ -51,6 +60,12 @@ class ConnectFour:
     def handle_button_event(self, x:int, y: int, action: Action):
         #Logic for pressing buttons
         print(f"I'm handling a button ({x}, {y})")
+
+        if self.start_screen:
+            self.reset_game()
+            self.start_screen = False
+            return
+
         if x == 7 and y== 0:
             self.board.play_sound("reset.mp3")
             self.reset_game()
@@ -95,7 +110,8 @@ class ConnectFour:
         elif self.is_board_full():
             self.game_over = True
             self.show_tie_game()
-        self.switch_player()
+        else:
+            self.switch_player()
         self.update_board_colors()
 
     def update_board_colors(self):
@@ -123,6 +139,8 @@ class ConnectFour:
         elif self.turn == PLAYER_TWO:
             self.turn = PLAYER_ONE
 
+        self.win_flash = []
+
     def show_current_player(self):
         #TODO: Function to indicate on the board which player is currently placing a piece
         pass
@@ -135,7 +153,7 @@ class ConnectFour:
             for y in range(7):
                 if self.game_state[x][y] == 0:
                     return False
-        return True 
+        return True
 
     def get_player_color(self, player) -> tuple[int, int, int]:
         #TODO: Return the color for the given player 
@@ -143,6 +161,10 @@ class ConnectFour:
             return Colors.RED
         elif player == PLAYER_TWO:
             return Colors.BLUE
+        elif player == 3:
+            return Colors.PURPLE
+        elif player == 4:
+            return Colors.YELLOW
         else:
             return Colors.WHITE
 
@@ -158,15 +180,19 @@ class ConnectFour:
     def check_win(self, row, col, player):
         check_row = row
         check_col = col
-        directions = [(0, 1), (1, 0), (1, 1), (1, -1)] #Includes horizantal, vertical, and both diagonals
+        directions = [(0, 1), (1, 0), (1, 1), (1, -1)] # Includes horizantal, vertical, and both diagonals
+
+        self.win_flash.append((row, col))
 
         for dr, dc in directions:
-            count = 1 #Tracks the amount of peices in a row
+            count = 1 # Tracks the amount of peices in a row
             check_row = row + dr
             check_col = col + dc
             while check_row < ROWS and check_row >= 0 and check_col < COLS and check_col >= 0:
                 if self.game_state[check_row][check_col] == player:
                     count += 1
+                    self.win_flash.append((check_row, check_col))
+                    print(self.win_flash)
                     check_row += dr
                     check_col += dc
                 else:
@@ -177,6 +203,7 @@ class ConnectFour:
             while check_row < ROWS and check_row >= 0 and check_col < COLS and check_col >= 0:
                 if self.game_state[check_row][check_col] == player:
                     count += 1
+                    self.win_flash.append((check_row, check_col))
                     check_row -= dr
                     check_col -= dc
                 else:
@@ -188,26 +215,50 @@ class ConnectFour:
         return False
 
 
-            
 
     def show_winner(self):
         #TODO: Display on the board who won
         print("winner: " + str(self.turn))
         self.board.play_sound("cheer.mp3")
+
+        for _ in range(5):
+            for r, c in self.win_flash:
+                self.board.set_cell_color(c, r+2, Colors.WHITE)
+            self.board.update_display()
+
+            time.sleep(.2)
+
+            self.update_board_colors()
+
+            time.sleep(.2)
         
 
     def show_tie_game(self):
         #TODO: Display on the board that there was a draw
         self.board.play_sound("draw_sound.mp3")
-        if self.is_board_full():
-            self.game_state = [
-            [3, 3, 3, 3, 3, 3, 3],
-            [3, 3, 3, 3, 3, 3, 3],
-            [3, 3, 3, 3, 3, 3, 3],
-            [3, 3, 3, 3, 3, 3, 3],
-            [3, 3, 3, 3, 3, 3, 3],
-            [3, 3, 3, 3, 3, 3, 3]
-        ]
+        for _ in range(5):
+            for r in range(ROWS):
+                for c in range(COLS):
+                    self.board.set_cell_color(c, r+2, Colors.WHITE)
+            self.board.update_display()
+
+            time.sleep(.2)
+
+            self.update_board_colors()
+
+            time.sleep(.2)
         print("TIE")
+
+    def show_start(self):
+        self.game_state = [
+            [1, 1, 2, 2, 1, 1, 1],
+            [1, 0, 2, 2, 1, 0, 1],
+            [1, 1, 2, 2, 1, 0, 1],
+            [0, 0, 4, 0, 4, 0, 0],
+            [0, 0, 4, 4, 4, 0, 0],
+            [0, 0, 0, 0, 4, 0, 0]
+        ]
+
+        self.update_board_colors()
 
 
