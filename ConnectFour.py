@@ -133,7 +133,7 @@ class ConnectFour:
         self.board.update_display()
 
     def switch_player(self):
-        #TODO: Change which player is curently placing a piece. Keep track of this in some sort of variable
+        #Change which player is curently placing a piece. Kept track of this in some sort of variable
         if self.turn == PLAYER_ONE:
             self.turn = PLAYER_TWO
         elif self.turn == PLAYER_TWO:
@@ -142,12 +142,12 @@ class ConnectFour:
         self.win_flash = []
 
     def show_current_player(self):
-        #TODO: Function to indicate on the board which player is currently placing a piece
+        #Function to indicate on the board which player is currently placing a piece
         pass
         
 
     def is_board_full(self):
-        #TODO: Return whether or not the game state has no more legal moves
+        #Returns whether or not the game state has no more legal moves
         j = 0
         for x in range(6):
             for y in range(7):
@@ -156,7 +156,7 @@ class ConnectFour:
         return True
 
     def get_player_color(self, player) -> tuple[int, int, int]:
-        #TODO: Return the color for the given player 
+        #Returns the color for the given player 
         if player == PLAYER_ONE:
             return Colors.RED
         elif player == PLAYER_TWO:
@@ -168,7 +168,7 @@ class ConnectFour:
         else:
             return Colors.WHITE
 
-    def is_column_full(self, col: int):
+    def is_column_full(self, col: int):#Checks whether the column is full
         for row in self.game_state:
             if row[col] == 0:
                 return False
@@ -177,7 +177,7 @@ class ConnectFour:
             
             
 
-    def check_win(self, row, col, player):
+    def check_win(self, row, col, player):#win check
         check_row = row
         check_col = col
         directions = [(0, 1), (1, 0), (1, 1), (1, -1)] # Includes horizantal, vertical, and both diagonals
@@ -217,7 +217,7 @@ class ConnectFour:
 
 
     def show_winner(self):
-        #TODO: Display on the board who won
+        #Displays on the board who won
         print("winner: " + str(self.turn))
         self.board.play_sound("cheer.mp3")
 
@@ -234,7 +234,7 @@ class ConnectFour:
         
 
     def show_tie_game(self):
-        #TODO: Display on the board that there was a draw
+        #Displays on the board that there was a draw
         self.board.play_sound("draw_sound.mp3")
         for _ in range(5):
             for r in range(ROWS):
@@ -249,7 +249,7 @@ class ConnectFour:
             time.sleep(.2)
         print("TIE")
 
-    def show_start(self):
+    def show_start(self):#Start screen
         self.game_state = [
             [1, 1, 2, 2, 1, 1, 1],
             [1, 0, 2, 2, 1, 0, 1],
