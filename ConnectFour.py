@@ -29,14 +29,13 @@ class ConnectFour:
         self.register_callbacks()
         self.game_over = False
         self.start_screen = True
-        print(self.is_board_full())
 
         self.win_flash = []
 
         self.show_start()
 
     def reset_game(self):
-        #Empties the board
+        #Empties the board and resets other variables
         self.game_state = [
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0],
@@ -61,6 +60,7 @@ class ConnectFour:
         #Logic for pressing buttons
         print(f"I'm handling a button ({x}, {y})")
 
+        # skip start screen when button pressed
         if self.start_screen:
             self.reset_game()
             self.start_screen = False
@@ -68,13 +68,18 @@ class ConnectFour:
 
         if x == 7 and y== 0:
             self.board.play_sound("reset.mp3")
+            # handle reset button
             self.reset_game()
             self.update_board_colors()
+
         elif self.find_lowest_empty_row(x) == -1:
+            # buzz for full row
             if self.game_over:
                 return
             self.board.play_sound("better_buzzer.mp3")
+
         else:
+            # sound for piece placement
             if self.game_over:
                 return
             self.board.play_sound("piece_in.mp3")
@@ -84,7 +89,7 @@ class ConnectFour:
         return x, y
 
     def find_lowest_empty_row(self, col: int):
-        #Return the lowest empty row in the column.
+        # Return the lowest empty row in the column.
         least = -1
         for row in self.game_state:
             if row[col] != 0:
@@ -94,13 +99,18 @@ class ConnectFour:
 
     def place_piece(self, col: int):
         #Finds the legal move in the column, and updates the game state to reflect the new piece, checking to see if a player has won with that new piece.
+
         row = self.find_lowest_empty_row(col)
+
+        # animate piece
         for i in range(row):
             self.game_state[i][col] = self.turn
             self.update_board_colors()
             time.sleep(0.1)
             self.game_state[i][col] = 0
             self.update_board_colors()
+
+        # set final piece position
         self.game_state[row][col] = self.turn
         self.board.play_sound("clack.mp3")
 
@@ -181,40 +191,59 @@ class ConnectFour:
             
             
 
-    def check_win(self, row, col, player):#win check
+    def check_win(self, row, col, player): # win check
         check_row = row
         check_col = col
+
         directions = [(0, 1), (1, 0), (1, 1), (1, -1)] # Includes horizantal, vertical, and both diagonals
 
         self.win_flash.append((row, col))
 
+        # loop through axes
         for dr, dc in directions:
+            # add placed piece
+            self.win_flash.append((row, col))
+            
             count = 1 # Tracks the amount of peices in a row
+
+            # check forward direction
             check_row = row + dr
             check_col = col + dc
             while check_row < ROWS and check_row >= 0 and check_col < COLS and check_col >= 0:
                 if self.game_state[check_row][check_col] == player:
                     count += 1
+
+                    # store selected pieces for flashing wins
                     self.win_flash.append((check_row, check_col))
-                    print(self.win_flash)
+                    
+                    # next piece
                     check_row += dr
                     check_col += dc
                 else:
                     break
-
+            
+            # check backward direction
             check_row = row - dr
             check_col = col - dc
             while check_row < ROWS and check_row >= 0 and check_col < COLS and check_col >= 0:
                 if self.game_state[check_row][check_col] == player:
                     count += 1
+
+                    # store selected pieces for flashing wins
                     self.win_flash.append((check_row, check_col))
+                    
+                    # next piece
                     check_row -= dr
                     check_col -= dc
                 else:
                     break
-
+            
             if count >= 4:
                 return True
+
+            # reset row stored
+            self.win_flash = []
+
 
         return False
 
